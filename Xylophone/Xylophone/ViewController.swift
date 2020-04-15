@@ -21,7 +21,8 @@ class ViewController: UIViewController {
     }
     
     @IBAction func playNote(_ sender: UIButton) {
-        playSound(forResource: sender.titleLabel?.text ?? "")
+        animateButton(sender)
+        playSound(soundNote: sender.titleLabel?.text ?? "")
     }
     
     private func setButtonStyle() {
@@ -29,8 +30,8 @@ class ViewController: UIViewController {
         buttonCollection.forEach { $0.layer.masksToBounds = true }
     }
     
-    private func playSound(forResource: String) {
-        guard let url = Bundle.main.url(forResource: forResource, withExtension: "wav") else { return }
+    private func playSound(soundNote: String) {
+        guard let url = Bundle.main.url(forResource: soundNote, withExtension: "wav") else { return }
         
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
@@ -44,6 +45,13 @@ class ViewController: UIViewController {
             print(error.localizedDescription)
         }
     }
-
+    
+    private func animateButton(_ button: UIButton) {
+        button.alpha = 0.5
+        UIView.animate(withDuration: 0.5) {
+            button.alpha = 1
+        }
+    }
+    
 }
 
